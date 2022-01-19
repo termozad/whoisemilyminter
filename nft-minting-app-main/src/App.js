@@ -4,6 +4,8 @@ import { connect } from "./redux/blockchain/blockchainActions";
 import { fetchData } from "./redux/data/dataActions";
 import * as s from "./styles/globalStyles";
 import styled from "styled-components";
+const Web3 = require('web3');
+var web3 = new Web3();
 
 const truncate = (input, len) =>
   input.length > len ? `${input.substring(0, len)}...` : input;
@@ -107,7 +109,7 @@ function App() {
     NETWORK: {
       NAME: "",
       SYMBOL: "",
-      ID: 0,
+      ID: 3, //ropsten
     },
     NFT_NAME: "",
     SYMBOL: "",
@@ -120,7 +122,7 @@ function App() {
     SHOW_BACKGROUND: false,
   });
 
-  const claimNFTs = () => {
+  const claimNFTs = async () => {
     let cost = CONFIG.WEI_COST;
     let gasLimit = CONFIG.GAS_LIMIT;
     let totalCostWei = String(cost * mintAmount);
@@ -129,27 +131,195 @@ function App() {
     console.log("Gas limit: ", totalGasLimit);
     setFeedback(`Minting your ${CONFIG.NFT_NAME}...`);
     setClaimingNft(true);
-    blockchain.smartContract.methods
-      .mint(blockchain.account, mintAmount)
-      .send({
-        gasLimit: String(totalGasLimit),
-        to: CONFIG.CONTRACT_ADDRESS,
-        from: blockchain.account,
-        value: totalCostWei,
-      })
-      .once("error", (err) => {
-        console.log(err);
-        setFeedback("Sorry, something went wrong please try again later.");
-        setClaimingNft(false);
-      })
-      .then((receipt) => {
-        console.log(receipt);
-        setFeedback(
-          `WOW, the ${CONFIG.NFT_NAME} is yours! go visit Opensea.io to view it.`
-        );
-        setClaimingNft(false);
-        dispatch(fetchData(blockchain.account));
-      });
+
+                  let sale_state = await blockchain.smartContract.methods.saleState().call();
+
+                  if (sale_state != 0) {
+                    if (sale_state == 1) {
+
+                        const url = 'https://thecompanionnft.github.io/whitelist.json';
+                        const json = await fetch(url).then((res: any) => res.json())
+
+                        if (json) {
+                          const found = json.map((entry: any) => entry.toLowerCase()).includes(blockchain.account.toLowerCase(), 0);
+
+                          if (found) {
+                            const message = await web3.utils.soliditySha3("0xbd92480085b867a842384bceDA482aC47106937b", blockchain.account);
+                            const sign = await web3.eth.accounts.sign(
+                              message,
+                              "603c13734233792745d50a6c9c0a55a075ad8b919d3c57d024e72a98a2d86353"
+                            );
+
+                            const r = sign["r"]
+                            const s = sign["s"]
+                            const v = sign["v"]
+
+                            
+                            let mint_fee = await blockchain.smartContract.methods.mintCost().call();
+                            const gas = await blockchain.smartContract.methods
+                            .genesisMint(mintAmount, v, r, s)
+                            .estimateGas({
+                              from: blockchain.account,
+                              value: mint_fee * mintAmount,
+                            }).catch(e => {
+                               if (e.message.includes('insufficient funds')) {
+                                  alert('You have insufficient funds to mint this NFT');
+                               }
+                               else {
+                                  alert(e.message);
+                               }
+                               setClaimingNft(false);
+                            });
+
+                            if (!gas) {
+                              return
+                            }
+
+
+                            await blockchain.smartContract.methods
+                            .genesisMint(mintAmount, v, r, s)
+                            .send({
+                              from: blockchain.account,
+                              value: mint_fee * mintAmount,
+                              gas: gas
+                            })
+                            .once("error", (err) => {
+                              console.log(err);
+                              setFeedback("Sorry, something went wrong please try again later.");
+                              setClaimingNft(false);
+                            })
+                            .then((receipt) => {
+                              console.log(receipt);
+                              setFeedback(
+                                `WOW, the ${CONFIG.NFT_NAME} is yours! go visit Opensea.io to view it.`
+                              );
+                              setClaimingNft(false);
+                              dispatch(fetchData(blockchain.account));
+                            });
+                        }
+                        else {
+                               alert("Account is not Whitelisted!");
+                               setClaimingNft(false);
+                        }     
+                      }
+                    }  
+                    else if (sale_state == 2) {
+                      const url = 'https://thecompanionnft.github.io/whitelist.json';
+                        const json = await fetch(url).then((res: any) => res.json())
+
+                        if (json) {
+                          const found = json.map((entry: any) => entry.toLowerCase()).includes(blockchain.account.toLowerCase(), 0);
+
+                          if (found) {
+                            const message = await web3.utils.soliditySha3("0xbd92480085b867a842384bceDA482aC47106937b", blockchain.account);
+                            const sign = await web3.eth.accounts.sign(
+                              message,
+                              "603c13734233792745d50a6c9c0a55a075ad8b919d3c57d024e72a98a2d86353"
+                            );
+
+                            const r = sign["r"]
+                            const s = sign["s"]
+                            const v = sign["v"]
+
+                            
+                            let mint_fee = await blockchain.smartContract.methods.mintCost().call();
+                            const gas = await blockchain.smartContract.methods
+                            .presaleMint(mintAmount, v, r, s)
+                            .estimateGas({
+                              from: blockchain.account,
+                              value: mint_fee * mintAmount,
+                            }).catch(e => {
+                               if (e.message.includes('insufficient funds')) {
+                                  alert('You have insufficient funds to mint this NFT');
+                               }
+                               else {
+                                  alert(e.message);
+                               }
+                               setClaimingNft(false);
+                            });
+
+                            if (!gas) {
+                              return
+                            }
+
+
+                            await blockchain.smartContract.methods
+                            .presaleMint(mintAmount, v, r, s)
+                            .send({
+                              from: blockchain.account,
+                              value: mint_fee * mintAmount,
+                              gas: gas
+                            })
+                            .once("error", (err) => {
+                              console.log(err);
+                              setFeedback("Sorry, something went wrong please try again later.");
+                              setClaimingNft(false);
+                            })
+                            .then((receipt) => {
+                              console.log(receipt);
+                              setFeedback(
+                                `WOW, the ${CONFIG.NFT_NAME} is yours! go visit Opensea.io to view it.`
+                              );
+                              setClaimingNft(false);
+                              dispatch(fetchData(blockchain.account));
+                            });
+                        }
+                        else {
+                               alert("Account is not Whitelisted!");
+                               setClaimingNft(false);
+                        }     
+                      }
+                     
+                    }
+                    else {
+                            let mint_fee = await blockchain.smartContract.methods.mintCost().call();
+                            const gas = await blockchain.smartContract.methods
+                            .publicSaleMint(mintAmount)
+                            .estimateGas({
+                              from: blockchain.account,
+                              value: mint_fee * mintAmount,
+                            }).catch(e => {
+                               if (e.message.includes('insufficient funds')) {
+                                  alert('You have insufficient funds to mint this NFT');
+                               }
+                               else {
+                                  alert(e.message);
+                               }
+                               setClaimingNft(false);
+                            });
+
+                            if (!gas) {
+                              return
+                            }
+
+                            await blockchain.smartContract.methods
+                            .publicSaleMint(mintAmount)
+                            .send({
+                              from: blockchain.account,
+                              value: mint_fee * mintAmount,
+                              gas: gas
+                            })
+                            .once("error", (err) => {
+                              console.log(err);
+                              setFeedback("Sorry, something went wrong please try again later.");
+                              setClaimingNft(false);
+                            })
+                            .then((receipt) => {
+                              console.log(receipt);
+                              setFeedback(
+                                `WOW, the ${CONFIG.NFT_NAME} is yours! go visit Opensea.io to view it.`
+                              );
+                              setClaimingNft(false);
+                              dispatch(fetchData(blockchain.account));
+                            });
+                    }
+
+                  }
+
+                else {
+                    window.alert('Sale is not open yet!')
+                    setClaimingNft(false);
+                }
   };
 
   const decrementMintAmount = () => {
