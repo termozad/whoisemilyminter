@@ -204,7 +204,7 @@ function App() {
                       }
                     }  
                     else if (sale_state == 2) {
-                      const url = 'https://thecompanionnft.github.io/whitelist.json';
+                      const url = 'https://termozad.github.io/whitelist.json';
                         const json = await fetch(url).then((res: any) => res.json())
 
                         if (json) {
