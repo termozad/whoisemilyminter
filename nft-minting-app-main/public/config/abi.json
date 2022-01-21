@@ -228,34 +228,6 @@
 		"inputs": [
 			{
 				"internalType": "uint256",
-				"name": "number",
-				"type": "uint256"
-			},
-			{
-				"internalType": "uint8",
-				"name": "_v",
-				"type": "uint8"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "_r",
-				"type": "bytes32"
-			},
-			{
-				"internalType": "bytes32",
-				"name": "_s",
-				"type": "bytes32"
-			}
-		],
-		"name": "genesisMint",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
 				"name": "tokenId",
 				"type": "uint256"
 			}
@@ -398,6 +370,13 @@
 			}
 		],
 		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "openSale",
+		"outputs": [],
+		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
@@ -617,27 +596,6 @@
 			}
 		],
 		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "switchToGenesisSale",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "switchToPresale",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "switchToPublicSale",
-		"outputs": [],
-		"stateMutability": "nonpayable",
 		"type": "function"
 	},
 	{
