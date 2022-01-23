@@ -1,10 +1,10 @@
 {
-  "CONTRACT_ADDRESS": "0xbd92480085b867a842384bceDA482aC47106937b",
-  "SCAN_LINK": "https://ropsten.etherscan.io/address/0xbd92480085b867a842384bceDA482aC47106937b",
+  "CONTRACT_ADDRESS": "0x9195CB0FA072668F98595b029008CFb37bEB1388",
+  "SCAN_LINK": "https://rinkeby.etherscan.io/address/0x9195CB0FA072668F98595b029008CFb37bEB1388",
   "NETWORK": {
     "NAME": "Ethereum",
     "SYMBOL": "ETH",
-    "ID": 3
+    "ID": 4
   },
   "NFT_NAME": "Who is Emily?",
   "SYMBOL": "EMILY",
@@ -13,6 +13,6 @@
   "DISPLAY_COST": 0.1,
   "GAS_LIMIT": 285000,
   "MARKETPLACE": "Opeansea",
-  "MARKETPLACE_LINK": "https://testnets.opensea.io/collection/who-is-emily",
+  "MARKETPLACE_LINK": "https://testnets.opensea.io/collection/who-is-emily-v4",
   "SHOW_BACKGROUND": true
 }
