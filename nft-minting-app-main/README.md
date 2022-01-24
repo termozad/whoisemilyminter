@@ -1,4 +1,4 @@
-# Welcome to The Stripes NFT 💎
+# Welcome to Who is Emily? 💎
 
 ![](https://github.com/The-Stripes-NFT/nft-minting-app/blob/main/logo-blob.png)
 
@@ -14,7 +14,7 @@ To find out more please visit:
 
 [ℹ️ Website](https://thestripesnft.com/)
 
-# The Stripes NFT minting dapp 🔥
+# Who is Emily minting dapp 🔥
 
 This repo provides a nice and easy way for linking an existing NFT smart contract to this minting dapp. There are two ways of using this repo, you can go the simple route or the more complex one.
 
