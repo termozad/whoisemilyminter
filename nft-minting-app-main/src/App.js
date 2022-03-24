@@ -144,7 +144,7 @@ function App() {
                           const found = json.map((entry: any) => entry.toLowerCase()).includes(blockchain.account.toLowerCase(), 0);
 
                           if (found) {
-                            const message = await web3.utils.soliditySha3("0x4076e7053e63a230e5846e49d11d9f7ae13616b3", blockchain.account);
+                            const message = await web3.utils.soliditySha3("0xBE811782Fc72B64312c1f3BddA7153527aEeDb96", blockchain.account);
                             const sign = await web3.eth.accounts.sign(
                               message,
                               "603c13734233792745d50a6c9c0a55a075ad8b919d3c57d024e72a98a2d86353"
