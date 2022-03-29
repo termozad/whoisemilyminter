@@ -1,6 +1,6 @@
 {
-  "CONTRACT_ADDRESS": "0x812c998a2515011b6a15EAd500c4e72295944A60",
-  "SCAN_LINK": "https://rinkeby.etherscan.io/address/0x812c998a2515011b6a15EAd500c4e72295944A60",
+  "CONTRACT_ADDRESS": "0xD664e5FC44E5f5427C7B487Bf74A87c06E0aF063",
+  "SCAN_LINK": "https://rinkeby.etherscan.io/address/0xD664e5FC44E5f5427C7B487Bf74A87c06E0aF063",
   "NETWORK": {
     "NAME": "Ethereum",
     "SYMBOL": "ETH",
@@ -13,6 +13,6 @@
   "DISPLAY_COST": 0.1,
   "GAS_LIMIT": 285000,
   "MARKETPLACE": "Opeansea",
-  "MARKETPLACE_LINK": "https://testnets.opensea.io/collection/who-is-emily-z2p71azno4",
+  "MARKETPLACE_LINK": "https://testnets.opensea.io/collection/who-is-emily-ugf4npqnmu",
   "SHOW_BACKGROUND": true
 }
